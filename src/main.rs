@@ -9,7 +9,7 @@ use std::cmp::Ordering;
 /// a guess.
 ///
 fn main() {
-    println!("Guess the number!");
+    println!("Guess the number! You have 10 tries to get it right");
     println!("Please input your guess.");
 
     let secret_number = rand::thread_rng().gen_range(1..=100);
@@ -31,19 +31,24 @@ fn main() {
             },
         };
 
-        println!("You guessed: {guess}");
-
         guess_count += 1;
 
         match guess.cmp(&secret_number) {
-            Ordering::Less => println!("Too small!"),
-            Ordering::Greater => println!("Too big!"),
+            Ordering::Less => println!("{guess} is too small!"),
+            Ordering::Greater => println!("{guess} is too big!"),
             Ordering::Equal => {
                 let points = calculate_points(guess_count);
                 println!("You win with {points} point(s)");
                 break;
             },
         }
+
+        if guess_count >= 10 {
+            println!("Sorry. You don't have any more guesses");
+            break;
+        }
+
+        println!("You have {} guesses left", 10-guess_count);
     }
 }
 
